@@ -41,6 +41,10 @@ class MeasurementsController < ApplicationController
   def update
     # Update the measurement and redirect
 
+
+    validator = MeasurementParamsValidator.new(measurement_params, @measurement, self)
+    return unless validator.validate
+
     csv_file = measurement_params[:csv_file].present? ? measurement_params[:csv_file] : nil
     min_heart_rate_limit = measurement_params[:min_heart_rate_limit].to_i || @measurement.min_heart_rate_limit.to_i
     max_heart_rate_limit = measurement_params[:max_heart_rate_limit].to_i || @measurement.max_heart_rate_limit.to_i

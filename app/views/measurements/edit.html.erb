@@ -2,6 +2,9 @@
   <div class="row justify-content-center">
     <h1 class="text-center my-4">Edit measurement</h1>
     <div class="col-md-6">
+      <% flash.each do |message_type, message| %>
+        <div class="alert alert-danger"><%= message %></div>
+      <% end %>
       <%= render 'form', measurement: @measurement, url: measurement_path(@measurement), method: :patch, button_text: "Re-analyze ECG Data" %>
     </div>
   </div>

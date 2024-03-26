@@ -1,4 +1,4 @@
-  <%= link_to "Back", :back, class: 'btn btn-outline-primary my-3' %>
+<%= link_to "Back to Index", measurements_path, class: 'btn btn-outline-primary my-3' %>
 <%= simple_form_for @measurement, url: url, method: method, html: { multipart: true } do |f| %>
   <div class="form-group">
     <% if @measurement.csv_file.present? %>
