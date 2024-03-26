@@ -7,15 +7,16 @@ class MeasurementsController < ApplicationController
   end
 
   def create
-    # Service object processes the file and returns measurement data
+
+    validator = MeasurementParamsValidator.new(measurement_params, @measurement, self)
+    return unless validator.validate
+
     measurement_data = EcgAnalysisService.new(
       measurement_params[:csv_file],
       measurement_params[:measurement_datetime],
       measurement_params[:min_heart_rate_limit].to_i,
       measurement_params[:max_heart_rate_limit].to_i
     ).analyze
-
-    # Persist the results in the database
 
     @measurement = Measurement.new(measurement_data)
     @measurement.csv_file.attach(measurement_params[:csv_file])
@@ -44,6 +45,7 @@ class MeasurementsController < ApplicationController
     min_heart_rate_limit = measurement_params[:min_heart_rate_limit].to_i || @measurement.min_heart_rate_limit.to_i
     max_heart_rate_limit = measurement_params[:max_heart_rate_limit].to_i || @measurement.max_heart_rate_limit.to_i
     measurement_datetime = measurement_params[:measurement_datetime] || @measurement.measurement_datetime
+
     csv_file ||= @measurement.csv_file.blob.open do |file|
       measurement_data = EcgAnalysisService.new(
         file,
@@ -52,9 +54,8 @@ class MeasurementsController < ApplicationController
         max_heart_rate_limit,
       ).analyze
 
-      if measurement_params[:csv_file].present?
-        @measurement.csv_file.attach(measurement_params[:csv_file])
-      end
+
+      @measurement.csv_file.attach(measurement_params[:csv_file]) if measurement_params[:csv_file].present?
 
       if @measurement.update(measurement_data)
         redirect_to measurements_path, notice: 'Measurement updated successfully'

@@ -6,7 +6,7 @@
       <%= f.file_field :csv_file, class: 'form-control' %>
       <div class="bg-info-secondary p-3">Current csv_file: <%= @measurement.csv_file.blob.filename %></div>
     <% else %>
-      <%= f.label :csv_file, 'Select ECG data file' %>
+      <%= f.label :csv_file, 'Select ECG data file*' %>
       <%= f.file_field :csv_file, class: 'form-control' %>
     <% end %>
   </div>
