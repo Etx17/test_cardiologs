@@ -18,4 +18,4 @@ Upon first glance at the data, I encountered heart rate readings **ranging betwe
 
 ### Test
 
-Coverage is minimal given the time given. I thought testing the core feature of analysis was the most important ones. With more time, I could have gone deeper and test my validator, controllers and models as well.
+Given the time constraints, coverage was limited, so I focused on testing the core analysis feature, which seemed most critical. With additional time, I would have expanded testing to include validators, controllers, and models as well.
