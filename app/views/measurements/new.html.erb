@@ -2,14 +2,14 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <%= form_tag(delineation_path, method: "post", multipart: true) do %>
+      <%= simple_form_for @measurement, url: delineation_path, method: "post", html: { multipart: true } do |f| %>
         <div class="form-group">
-          <%= label_tag 'file', 'Select ECG data file' %>
-          <%= file_field_tag 'file', class: 'form-control' %>
+          <%= f.label :csv_file, 'Select ECG data file' %>
+          <%= f.file_field :csv_file, class: 'form-control' %>
         </div>
         <div class="form-group mt-3">
-          <%= label_tag 'measurement_datetime', 'Start date and time of the measurements' %>
-          <%= datetime_field_tag 'measurement_datetime', nil, class: 'form-control' %>
+          <%= f.label :measurement_datetime, 'Start date and time of the measurements' %>
+          <%= f.input :measurement_datetime, as: :string, input_html: { class: 'form-control', type: 'datetime-local' } %>
         </div>
 
         <div class="bg-info-secondary border border-primary p-3 my-3" style="border-radius: 12px;">
@@ -18,11 +18,13 @@
         </div>
 
         <div class="form-group d-flex gap-3 align-items-center">
-          <%= number_field_tag 'min_heart_rate_limit', 15, class: 'form-control' %>
-          <p class="mb-0">to: </p>
-          <%= number_field_tag 'max_heart_rate_limit', 300, class: 'form-control' %>
+          <%= f.input :min_heart_rate_limit, input_html: { value: @measurement.min_heart_rate_limit || 15 }, class: 'form-control' %>
+          <p class="mb-0 mt-3">to: </p>
+          <%= f.input :max_heart_rate_limit, input_html: { value: @measurement.max_heart_rate_limit || 350 }, class: 'form-control' %>
         </div>
-        <%= submit_tag "Upload ECG Data", class: 'btn btn-primary mt-3 text-end' %>
+        <div class="text-center">
+          <%= f.button :submit, "Analyze ECG Data", class: 'btn btn-primary mt-3 text-end' %>
+        </div>
       <% end %>
     </div>
   </div>

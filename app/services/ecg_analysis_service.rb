@@ -14,10 +14,10 @@ class EcgAnalysisService
     @max_heart_rate_limit = max_heart_rate_limit
     @noise_count = 0
     @qrs_count = 0
+
   end
 
   def analyze
-
     CSV.foreach(@file.path, headers: false) do |row|
       @row_count += 1
       next if row.first != 'QRS'
@@ -62,7 +62,7 @@ class EcgAnalysisService
       max_heart_rate_limit: @max_heart_rate_limit,
       noise_count: @noise_count,
       measurement_datetime: @start_time,
-      artefact_rate: (@noise_count.to_f / @row_count) * 100,
+      artefact_rate: (@noise_count.to_f / @row_count) * 1000,
       qrs_count: @qrs_count
     }
   end

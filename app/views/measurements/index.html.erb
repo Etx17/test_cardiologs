@@ -12,28 +12,32 @@
   <table class="table table-striped">
     <thead>
       <tr>
+        <th>Date of analysis</th>
         <th>Mean heart rate</th>
         <th>Min heart rate</th>
-        <th>Max heart rate</th>
         <th>Min heart rate time</th>
+        <th>Max heart rate</th>
         <th>Max heart rate time</th>
-        <th>Date of analysis</th>
+        <th>Artefacts</th>
         <th>Artefact rate</th>
-        <th>Infos</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <% @measurements.each do |measurement| %>
         <tr>
+          <td><%= measurement.created_at.strftime("%a, %B %d, %I:%M%p") %></td>
           <td><%= measurement.mean_heart_rate %></td>
           <td><%= measurement.min_heart_rate %></td>
+          <td><%= measurement.min_heart_rate_time.strftime("%I:%M%p") %></td>
           <td><%= measurement.max_heart_rate %></td>
-          <td><%= measurement.min_heart_rate_time %></td>
-          <td><%= measurement.max_heart_rate_time %></td>
-          <td><%= measurement.created_at %></td>
+          <td><%= measurement.max_heart_rate_time.strftime("%I:%M%p") %></td>
+          <td><span class="text-danger"><%= measurement.noise_count %></span> records out of range <%= measurement.min_heart_rate_limit %> - <%= measurement.max_heart_rate_limit %></td>
+          <td><%= format_artefact_rate(measurement.artefact_rate) %> ‰</td>
           <td>
-            coucou
+            <%= link_to edit_measurement_path(measurement), class: "btn btn-primary" do %>
+              <i class="fas fa-edit"></i>
+            <% end %>
           </td>
         </tr>
       <% end %>
