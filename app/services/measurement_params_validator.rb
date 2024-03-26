@@ -1,4 +1,3 @@
-# app/services/measurement_params_validator.rb
 class MeasurementParamsValidator
   def initialize(params, model, controller)
     @params = params
@@ -37,54 +36,48 @@ class MeasurementParamsValidator
   def validate_csv_file
     if csv_file.nil?
       @controller.redirect_back(fallback_location: @controller.new_measurement_path, alert: 'Please select a CSV file')
-      false
-    else
-      true
+      return false
     end
+    true
   end
 
   def validate_content_type
     if csv_file.content_type != 'text/csv'
       @controller.redirect_back(fallback_location: @controller.new_measurement_path, alert: 'Please select a CSV file')
-      false
-    else
-      true
+      return false
     end
+    true
   end
 
   def validate_datetime
     if measurement_datetime.blank?
       @controller.redirect_back(fallback_location: @controller.new_measurement_path, alert: 'Please select a date and time')
-      false
-    else
-      true
+      return false
     end
+    true
   end
 
   def validate_min_heart_rate_limit
     if min_heart_rate_limit <= 0
       @controller.redirect_back(fallback_location: @controller.new_measurement_path, alert: 'Please enter a valid minimum heart rate limit')
-      false
-    else
-      true
+      return false
     end
+    true
   end
 
   def validate_max_heart_rate_limit
     if max_heart_rate_limit <= 0
       @controller.redirect_back(fallback_location: @controller.new_measurement_path, alert: 'Please enter a valid maximum heart rate limit')
-      false
-    else
-      true
+      return false
     end
+    true
   end
 
   def validate_heart_rate_limits
     if min_heart_rate_limit >= max_heart_rate_limit
       @controller.redirect_back(fallback_location: @controller.new_measurement_path, alert: 'Minimum heart rate limit must be less than maximum heart rate limit')
-      false
-    else
-      true
+      return false
     end
+    true
   end
 end

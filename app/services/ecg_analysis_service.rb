@@ -53,7 +53,7 @@ class EcgAnalysisService
       @previous_qrs_end = offset
     end
 
-    raise ArgumentError, "CSV file must contain data" if @row_count < 2 
+    raise ArgumentError, "CSV file must contain data" if @row_count < 2
     raise ArgumentError, "CSV file must contain at least one QRS complex" if @qrs_count.zero?
     # We could do more, like checking if the CSV has the correct minimum amount of qrs complexes
 
@@ -70,8 +70,6 @@ class EcgAnalysisService
       artefact_rate: (@noise_count.to_f / @row_count) * 100, # We could compared it with @qrs_count to see the proportion of QRS rows that are artefacts
       qrs_count: @qrs_count
     }
-
-
   end
 
 end

@@ -2,7 +2,6 @@ class MeasurementsController < ApplicationController
   before_action :set_measurement, only: [:edit, :update]
 
   def new
-    # Renders the form for file upload and datetime input.
     @measurement = Measurement.new
   end
 
@@ -29,18 +28,14 @@ class MeasurementsController < ApplicationController
   end
 
   def index
-    # Fetch all the measurements from the database
     @measurements = Measurement.all.reverse_order
   end
 
   def edit
-    # Renders the form for editing the measurement
     @measurement = Measurement.find(params[:id])
   end
 
   def update
-    # Update the measurement and redirect
-
 
     validator = MeasurementParamsValidator.new(measurement_params, @measurement, self)
     return unless validator.validate
@@ -57,7 +52,6 @@ class MeasurementsController < ApplicationController
         min_heart_rate_limit,
         max_heart_rate_limit,
       ).analyze
-
 
       @measurement.csv_file.attach(measurement_params[:csv_file]) if measurement_params[:csv_file].present?
 
