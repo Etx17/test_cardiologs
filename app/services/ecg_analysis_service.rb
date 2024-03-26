@@ -17,24 +17,27 @@ class EcgAnalysisService
   end
 
   def analyze
+
+
     CSV.foreach(@file.path, headers: false) do |row|
       @row_count += 1
       next if row.first != 'QRS'
-      # alerter l'utilisateur si le fichier n'est pas correct ( et si jamais on me dit que le fichier peut contenir des erreurs)
+
       type, onset, offset = row.first(3)
       onset = onset.to_i
       offset = offset.to_i
       @qrs_count += 1
 
       if @previous_qrs_end
-        interval = onset - @previous_qrs_end # time in milliseconds between QRS complexes
-        heart_rate = 60_000 / interval.to_f # convert to heart rate in bpm ( 60 000 ms = 1 min)
-        # Skip unrealistic heart rate values
+        raise ArgumentError, "current QRS complex time is before the previous QRS complex time. Check data" if onset < @previous_qrs_end
+        interval = onset - @previous_qrs_end
+        heart_rate = 60_000 / interval.to_f
+
         if heart_rate < @min_heart_rate_limit || heart_rate > @max_heart_rate_limit # enable user to change those values
           @noise_count += 1
           next
         end
-        # Check for min and max heart rates
+
         if heart_rate < @min_heart_rate
           @min_heart_rate = heart_rate
           @min_heart_rate_time = @start_time + (@previous_qrs_end / 1000.0).seconds
@@ -47,9 +50,12 @@ class EcgAnalysisService
 
         @heart_rates << heart_rate
       end
-      @previous_qrs_end = offset # update the time of the last QRS complex
-
+      @previous_qrs_end = offset
     end
+
+    raise ArgumentError, "CSV file must contain data" if @row_count < 2 
+    raise ArgumentError, "CSV file must contain at least one QRS complex" if @qrs_count.zero?
+    # We could do more, like checking if the CSV has the correct minimum amount of qrs complexes
 
     {
       min_heart_rate: @min_heart_rate,
@@ -61,7 +67,7 @@ class EcgAnalysisService
       max_heart_rate_limit: @max_heart_rate_limit,
       noise_count: @noise_count,
       measurement_datetime: @start_time,
-      artefact_rate: (@noise_count.to_f / @row_count) * 100,
+      artefact_rate: (@noise_count.to_f / @row_count) * 100, # We could compared it with @qrs_count to see the proportion of QRS rows that are artefacts
       qrs_count: @qrs_count
     }
 
