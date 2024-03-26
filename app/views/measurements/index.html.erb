@@ -1,0 +1,41 @@
+<h1>Index of measurements</h1>
+<%= link_to "New analysis", new_measurement_path, class: "btn btn-primary" %>
+<div class="container">
+  <!--
+   t.integer "mean_heart_rate"
+    t.datetime "min_heart_rate_time"
+    t.datetime "max_heart_rate_time"
+    t.datetime "measurement_datetime"
+    t.integer "min_heart_rate"
+    t.integer "max_heart_rate"
+  -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Mean heart rate</th>
+        <th>Min heart rate</th>
+        <th>Max heart rate</th>
+        <th>Min heart rate time</th>
+        <th>Max heart rate time</th>
+        <th>Date of analysis</th>
+        <th>Artefact rate</th>
+        <th>Infos</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @measurements.each do |measurement| %>
+        <tr>
+          <td><%= measurement.mean_heart_rate %></td>
+          <td><%= measurement.min_heart_rate %></td>
+          <td><%= measurement.max_heart_rate %></td>
+          <td><%= measurement.min_heart_rate_time %></td>
+          <td><%= measurement.max_heart_rate_time %></td>
+          <td><%= measurement.created_at %></td>
+          <td>
+            coucou
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+</div>

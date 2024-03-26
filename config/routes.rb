@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
-  root to: "pages#home"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root to: "measurements#index"
+  # This route handles the form display
+  get 'measurements/new', to: 'measurements#new', as: :new_measurement
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # This route handles the form submission
+  post 'delineation', to: 'measurements#create'
+
+  # This route displays the processed measurements
+  get 'measurements', to: 'measurements#index', as: :measurements
 end
