@@ -1,14 +1,6 @@
-<h1>Index of measurements</h1>
-<%= link_to "New analysis", new_measurement_path, class: "btn btn-primary" %>
-<div class="container">
-  <!--
-   t.integer "mean_heart_rate"
-    t.datetime "min_heart_rate_time"
-    t.datetime "max_heart_rate_time"
-    t.datetime "measurement_datetime"
-    t.integer "min_heart_rate"
-    t.integer "max_heart_rate"
-  -->
+<h1 class="text-center my-5">Welcome to your Measurements Index</h1>
+<div class="container text-center">
+  <%= link_to "New analysis", new_measurement_path, class: "btn btn-primary btn-lg mb-3" %>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -32,8 +24,8 @@
           <td><%= measurement.min_heart_rate_time.strftime("%I:%M%p") %></td>
           <td><%= measurement.max_heart_rate %></td>
           <td><%= measurement.max_heart_rate_time.strftime("%I:%M%p") %></td>
-          <td><span class="text-danger"><%= measurement.noise_count %></span> records out of range <%= measurement.min_heart_rate_limit %> - <%= measurement.max_heart_rate_limit %></td>
-          <td><%= format_artefact_rate(measurement.artefact_rate) %> ‰</td>
+          <td><span class="text-danger"><%= measurement.noise_count %></span><small> records out of range: <span class="text-danger"><%= measurement.min_heart_rate_limit %> - <%= measurement.max_heart_rate_limit %></span></small></td>
+          <td><%= format_artefact_rate(measurement.artefact_rate) %></td>
           <td>
             <%= link_to edit_measurement_path(measurement), class: "btn btn-primary" do %>
               <i class="fas fa-edit"></i>

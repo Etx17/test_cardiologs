@@ -6,4 +6,5 @@ class Measurement < ApplicationRecord
   validates :max_heart_rate_limit, presence: true
   validates :min_heart_rate_limit, numericality: { greater_than: 0 }
   validates :max_heart_rate_limit, numericality: { greater_than: 0 }
+  validates :measurement_datetime, presence: true
 end

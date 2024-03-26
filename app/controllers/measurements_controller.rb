@@ -21,8 +21,7 @@ class MeasurementsController < ApplicationController
     @measurement.csv_file.attach(measurement_params[:csv_file])
 
     if @measurement.save
-      flash[:notice] = 'Measurement saved successfully'
-      redirect_to measurements_path
+      redirect_to measurements_path, notice: 'Measurement created successfully'
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,14 +34,33 @@ class MeasurementsController < ApplicationController
 
   def edit
     # Renders the form for editing the measurement
+    @measurement = Measurement.find(params[:id])
   end
 
   def update
     # Update the measurement and redirect
-    if @measurement.update(measurement_params)
-      redirect_to measurements_path
-    else
-      render :edit
+
+    csv_file = measurement_params[:csv_file].present? ? measurement_params[:csv_file] : nil
+    min_heart_rate_limit = measurement_params[:min_heart_rate_limit].to_i || @measurement.min_heart_rate_limit.to_i
+    max_heart_rate_limit = measurement_params[:max_heart_rate_limit].to_i || @measurement.max_heart_rate_limit.to_i
+    measurement_datetime = measurement_params[:measurement_datetime] || @measurement.measurement_datetime
+    csv_file ||= @measurement.csv_file.blob.open do |file|
+      measurement_data = EcgAnalysisService.new(
+        file,
+        measurement_datetime,
+        min_heart_rate_limit,
+        max_heart_rate_limit,
+      ).analyze
+
+      if measurement_params[:csv_file].present?
+        @measurement.csv_file.attach(measurement_params[:csv_file])
+      end
+
+      if @measurement.update(measurement_data)
+        redirect_to measurements_path, notice: 'Measurement updated successfully'
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 

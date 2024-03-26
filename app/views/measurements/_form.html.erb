@@ -1,0 +1,30 @@
+  <%= link_to "Back", :back, class: 'btn btn-outline-primary my-3' %>
+<%= simple_form_for @measurement, url: url, method: method, html: { multipart: true } do |f| %>
+  <div class="form-group">
+    <% if @measurement.csv_file.present? %>
+      <%= f.label :csv_file, 'Select another ECG data file (optional)' %>
+      <%= f.file_field :csv_file, class: 'form-control' %>
+      <div class="bg-info-secondary p-3">Current csv_file: <%= @measurement.csv_file.blob.filename %></div>
+    <% else %>
+      <%= f.label :csv_file, 'Select ECG data file' %>
+      <%= f.file_field :csv_file, class: 'form-control' %>
+    <% end %>
+  </div>
+  <div class="form-group mt-3">
+    <%= f.input :measurement_datetime, as: :string, label:'Start date and time of the measurements', input_html: { value: @measurement.measurement_datetime&.strftime("%Y-%m-%dT%H:%M"), class: 'form-control', type: 'datetime-local' } %>
+  </div>
+
+  <div class="bg-info-secondary border border-primary p-3 my-3" style="border-radius: 12px;">
+    <p class="text-primary mb-0"><i class="fas fa-info-circle text-primary pe-2"></i> Heart rate limits</p>
+    <p class="text-secondary my-0">Set the minimum and maximum heart rate limits to detect artefacts</p>
+  </div>
+
+  <div class="form-group d-flex gap-3 align-items-center">
+    <%= f.input :min_heart_rate_limit, input_html: { value: @measurement.min_heart_rate_limit || 15 }, class: 'form-control' %>
+    <p class="mb-0 mt-3">to: </p>
+    <%= f.input :max_heart_rate_limit, input_html: { value: @measurement.max_heart_rate_limit || 350 }, class: 'form-control' %>
+  </div>
+  <div class="text-center">
+    <%= f.button :submit, button_text, class: 'btn btn-primary mt-3 text-end' %>
+  </div>
+<% end %>

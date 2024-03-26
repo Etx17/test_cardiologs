@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   # This route handles the form submission
   post 'delineation', to: 'measurements#create'
-  resources :measurements, except: :create
+  resources :measurements, except: [:create]
 
   # # This route displays the processed measurements
   # get 'measurements', to: 'measurements#index', as: :measurements

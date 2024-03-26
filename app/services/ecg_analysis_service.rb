@@ -14,7 +14,6 @@ class EcgAnalysisService
     @max_heart_rate_limit = max_heart_rate_limit
     @noise_count = 0
     @qrs_count = 0
-
   end
 
   def analyze
@@ -62,9 +61,11 @@ class EcgAnalysisService
       max_heart_rate_limit: @max_heart_rate_limit,
       noise_count: @noise_count,
       measurement_datetime: @start_time,
-      artefact_rate: (@noise_count.to_f / @row_count) * 1000,
+      artefact_rate: (@noise_count.to_f / @row_count) * 100,
       qrs_count: @qrs_count
     }
+
+
   end
 
 end
