@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This document describes the process I followed and the considerations I made during the analysis of heart rate data for the assignment. Initially, the dataset showed unusual heart rate readings, which led to a deeper investigation into the data's integrity and physiological plausibility.
+This document describes the process I followed and the considerations I made during the analysis of heart rate data for the assignment. Initially, the dataset showed unusual heart rate readings, which led to a deeper investigation into the data's integrity and physiological plausibility. Given the time I had to do this assignment, there are a lot of improvements that can be made (UI, feedbacks to user, icons, warning of a potential wrong analysis could be more emphasized)
 
 ## Analysis Overview
 
